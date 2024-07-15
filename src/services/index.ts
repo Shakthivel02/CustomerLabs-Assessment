@@ -9,7 +9,7 @@ const axiosConfig = {
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     Accept: "application/json",
-    Referer: "http://localhost:3000/",
+    proxy: "http://localhost:8080",
   },
 }
 
