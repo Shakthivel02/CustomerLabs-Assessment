@@ -9,7 +9,10 @@ const axiosConfig = {
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     Accept: "application/json",
-    proxy: "http://localhost:8080",
+  },
+  proxy: {
+    host: "localhost",
+    port: 8080,
   },
 }
 
@@ -30,8 +33,7 @@ api.interceptors.response.use(
   },
   function (error) {
     if (error.response && error.response.status === 401) {
-      // Handle unauthorized errors
-      window.location.reload() // Example of how to handle 401 errors
+      window.location.reload()
     }
     return Promise.reject(error)
   }
