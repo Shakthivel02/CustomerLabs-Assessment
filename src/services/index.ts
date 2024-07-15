@@ -1,22 +1,13 @@
 import axios from "axios"
 
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-const BASEURL = "https://webhook.site/"
-
-const axiosConfig = {
-  baseURL: proxyUrl + BASEURL,
+const api = axios.create({
+  baseURL: "/",
   timeout: 30000,
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     Accept: "application/json",
   },
-  proxy: {
-    host: "localhost",
-    port: 8080,
-  },
-}
-
-const api = axios.create(axiosConfig)
+})
 
 api.interceptors.request.use(
   function (config) {
