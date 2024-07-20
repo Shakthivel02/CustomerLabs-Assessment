@@ -1,6 +1,5 @@
-// src/components/SegmentModal.tsx
-import React, { useState } from "react"
-import { SchemaSelector } from "../schemaSelector/SchemaSelector"
+import React, { useState, useCallback } from "react"
+import SchemaSelector from "../schemaSelector/SchemaSelector"
 import schemaOptions from "../../const/schemaOptions"
 import { useDispatch } from "react-redux"
 import {
@@ -20,17 +19,20 @@ export const SegmentModal: React.FC<Props> = ({ onClose }) => {
 
   const dispatch = useDispatch()
 
-  const handleAddSchema = (schema: string, index?: number) => {
-    const newSchemas = [...schemas]
-    if (index !== undefined) {
-      newSchemas[index] = schema
-    } else {
-      newSchemas.push(schema)
-    }
-    setSchemas(newSchemas)
-  }
+  const handleAddSchema = useCallback(
+    (schema: string, index?: number) => {
+      const newSchemas = [...schemas]
+      if (index !== undefined) {
+        newSchemas[index] = schema
+      } else {
+        newSchemas.push(schema)
+      }
+      setSchemas(newSchemas)
+    },
+    [schemas]
+  )
 
-  const handleSaveSegment = () => {
+  const handleSaveSegment = useCallback(() => {
     const data = {
       segment_name: segmentName,
       schema: schemas.map((schema) => ({
@@ -41,7 +43,7 @@ export const SegmentModal: React.FC<Props> = ({ onClose }) => {
     dispatch(sendFormData(data))
     console.log(data) // Send this data to the server
     onClose()
-  }
+  }, [segmentName, schemas, dispatch, onClose])
 
   return (
     <ModalOverlay>
@@ -74,4 +76,5 @@ export const SegmentModal: React.FC<Props> = ({ onClose }) => {
     </ModalOverlay>
   )
 }
+
 export default SegmentModal

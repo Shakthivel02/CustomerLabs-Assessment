@@ -1,10 +1,9 @@
-// src/components/SchemaSelector.tsx
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import schemaOptions from "../../const/schemaOptions"
 import { Container, Select, AddLink } from "./style"
 import Props from "./types"
 
-export const SchemaSelector: React.FC<Props> = ({
+const SchemaSelector: React.FC<Props> = ({
   selectedSchemas,
   onAddSchema,
   index,
@@ -18,19 +17,22 @@ export const SchemaSelector: React.FC<Props> = ({
     }
   }, [selectedSchema])
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(e.target.value)
-    if (index !== undefined) {
-      onAddSchema(e.target.value, index)
-    }
-  }
+  const handleSelectChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelected(e.target.value)
+      if (index !== undefined) {
+        onAddSchema(e.target.value, index)
+      }
+    },
+    [index, onAddSchema]
+  )
 
-  const handleAddClick = () => {
+  const handleAddClick = useCallback(() => {
     if (selected && !selectedSchemas.includes(selected)) {
       onAddSchema(selected)
       setSelected("")
     }
-  }
+  }, [selected, selectedSchemas, onAddSchema])
 
   return (
     <Container>
@@ -54,3 +56,5 @@ export const SchemaSelector: React.FC<Props> = ({
     </Container>
   )
 }
+
+export default React.memo(SchemaSelector)
